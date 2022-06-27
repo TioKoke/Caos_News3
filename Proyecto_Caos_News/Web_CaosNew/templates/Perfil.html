@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block titulo %}
+<title>Caos New</title>
+{% endblock titulo %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/Perfil.css' %}">
+{% endblock css%}
+
+{% block contenido%}
+{% if user.is_authenticated %}
+<div class="container emp-profile mt-4">
+    <form method="post">
+        {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                        <div class="file btn btn-lg btn-primary">Cambiar Foto<input type="file" name="file" /></div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h1>Perfil</h1>
+                    <div class="profile-head">
+                        <li>{{user.first_name}} {{user.last_name}}</li>
+                        <li>{{user.email}}</li>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+
+<div class="container"> 
+    <section style="margin-top: 45px;">
+        <div style="text-align: center;">
+            <h2>Listado de Noticias</h2>
+            <h5>Noticias Agregadas: {{cantidad}}</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table text-center">
+                <thead>
+                    <td>Titulo</td>
+                    <td>Subtitulo</td>
+                    <td>Cuerpo de noticia</td>
+                    <td>Imagen</td>
+                    <td>Publicar</td>
+                    <td>Comentario</td>
+                    <td>Ubicacion</td>
+                    <td>Categoria</td>
+                    <td>Opciones</td>
+                </thead>
+                <tbody>
+                    {% for reg in noticias %}
+                    <td>{{reg.titulo}}</td>
+                    <td>{{reg.subtitulo}}</td>
+                    <td>{{reg.historia}}</td>
+                    <td>
+                        <img src="{{reg.imagen.url}}" alt="" style="width: 150px; height: 150px;">
+                    </td>
+                    <td>
+                        {% if reg.publicar %}
+                        PUBLICADO
+                        {% else %}
+                        NO PUBLICADO
+                        {% endif %}
+                    </td>
+                    <td>{{reg.comentario}}</td>
+                    <td>{{reg.ubicacion}}</td>
+                    <td>{{reg.nombre}}</td>
+                    <td>
+                        <button class="btn-primary" onclick="eliminar('{{reg.titulo}}')">Eliminar</button>
+                        <button class="btn-primary" onclick="modificar('{{reg.titulo}}')">Modificar</button>
+                        <button class="btn-primary" onclick="galeria('{{reg.titulo}}')" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Foto</button>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<script>
+    function eliminar(titulo) {
+        Swal.fire({
+            title: '¿Desea eliminar la mascota ' + titulo + '?',
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            denyButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('eliminado!', '', 'success')
+                location.href = '/eliminar/' + titulo + '/';
+            }
+        })
+    }
+
+    function modificar(titulo) {
+        location.href = '/modificar/' + titulo + '/';
+    }
+
+    function galeria(titulo) {
+        document.getElementById("txtTituloNoticia").value = titulo;
+    }
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Fotos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'INSERT' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="text" name="txtTituloNoticia" id="txtTituloNoticia">
+                    <input type="file" name="txtImagen" id="txtImagen" style="margin-top: 1em;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Grabar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock contenido %}
