@@ -1,3 +1,4 @@
+from select import select
 from django.shortcuts import render
 #importar modelo de socio
 from .models import *
@@ -23,7 +24,7 @@ def eliminar(request,id):
     noticias = Noticia.objects.filter(usuario=request.user.username)
     cantidad = Noticia.objects.filter(usuario=request.user.username).count()
     contexto={"cantidad":cantidad,"noticias":noticias,"mensaje":mensaje, "items":categorias}
-    return render(request,"AgregarNoticia.html",contexto)
+    return render(request,"Perfil.html",contexto)
 
 def cantidad_no_publicada(usu):
     print(usu)
@@ -37,7 +38,7 @@ def Home(request):
     return render(request,"Home.html",contexto)
 
 def Galeria1(request):
-    noticia_ultimas = Noticia.objects.all
+    noticia_ultimas = Noticia.objects.filter(publicar=True)
     contexto ={"noticia_ultimas":noticia_ultimas}
     return render(request,"Galeria.html",contexto)
 
@@ -78,7 +79,25 @@ def Login(request):
             contexto={"msg":"Usuario o contraseña incorrecto"}
     return render(request,"Login.html",contexto)
 
-def Contacto(request):
+def Contactos(request):
+    if request.POST:
+        r = request.POST.get("txtRut")
+        n = request.POST.get("txtNombre")
+        c = request.POST.get("txtCorreo")
+        t = request.POST.get("txtFono")
+        re = request.POST.get("txtRegion")
+        ci = request.POST.get("txtCiudad")
+        te = True
+        con = Contacto()
+        con.rut = r
+        con.nombre = n
+        con.correo = c
+        con.telefono = t
+        con.region = re
+        con.ciudad = ci
+        con.termino = te
+        con.save()
+        return render(request,"Home.html")
     return render(request,"Contacto.html")
 
 def Cultural(request):    
@@ -122,6 +141,12 @@ def BuscaNoticia(request):
     return render(request,"BuscaNoticia.html",context)
 
 @login_required(login_url='/Login/')
+@permission_required('Web_CaosNew.add_galeria',login_url='/login/')
+@permission_required('Web_CaosNew.view_galeria',login_url='/login/')
+@permission_required('Web_CaosNew.add_mascotas',login_url='/login/')
+@permission_required('Web_CaosNew.view_mascotas',login_url='/login/')
+@permission_required('Web_CaosNew.delete_mascotas',login_url='/login/')
+@permission_required('Web_CaosNew.change_mascotas',login_url='/login/')
 def AgregarNoticia(request):
     usu = request.user.username # recuperrar nombre de usuario
     categorias = Categoria.objects.all() # selecciono todos los reg

@@ -17,36 +17,7 @@
 </div>
 <!--Agregar Noticia-->
 <div style="margin: 4em; flex-wrap: wrap; display: flex;">
-  <script>
-    function validarcontacto() {
-      let titular = document.getElementById("txtTitular").value;
-      if (titular.trim().length <= 2) {
-        Swal.fire({
-          icon: 'Error',
-          title: 'Debe Ingresar un Titular',
-        })
-        return false;
-      }
-      let escribir = document.getElementById("txtEscribir").value;
-      if (escribir.trim().length <= 2) {
-        Swal.fire({
-          icon: 'Error',
-          title: 'Debe Ingresar un Cuerpo',
-        })
-        return false;
-      }
-      let imagen = document.getElementById("txtImagen").value;
-      if (imagen == 0) {
-        Swal.fire({
-          icon: 'Error',
-          title: 'Debe Ingresar una imagen',
-        })
-        return false;
-      }
-      return true;
-    }
-  </script>
-  <form class="row g-3" onsubmit="return validarcontacto()" id="form-registro" action="{% url 'MODN' %}" method="post"
+  <form class="row g-3"  id="form-registro" action="{% url 'MODN' %}" method="post"
     enctype="multipart/form-data">
     {% csrf_token %}
     <div class="col-12">

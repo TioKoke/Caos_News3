@@ -5,7 +5,7 @@ from Web_CaosNew.models import Noticia
 # Create your views here.
 
 class NoticiasViewSet(generics.ListAPIView):
-    queryset = Noticia.objects.all()
+    queryset = Noticia.objects.filter(publicar=True)
     serializer_class = NoticiaSerializers
 
 class AutorBuscarViewSet(generics.ListAPIView):
