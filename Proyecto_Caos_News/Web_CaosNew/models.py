@@ -1,4 +1,6 @@
 
+from enum import auto
+from pyexpat import model
 from django.db import models
 
 # Create your models here.
@@ -38,3 +40,15 @@ class Galeria(models.Model):
     noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     def __str__(self):
         return 'Numero:'+str(self.auto_inc)
+
+class Contacto(models.Model):
+    contador = models.AutoField(primary_key=True)
+    rut = models.CharField(max_length=300,default='--')
+    nombre = models.CharField(max_length=300,default='--')
+    correo = models.CharField(max_length=300,default='--')
+    telefono = models.CharField(max_length=300,default='--')
+    region = models.CharField(max_length=300,default='--')
+    ciudad = models.CharField(max_length=300,default='--')
+    termino = models.BooleanField(default=False)
+    def __str__(self):
+        return 'Numero:'+str(self.contador)

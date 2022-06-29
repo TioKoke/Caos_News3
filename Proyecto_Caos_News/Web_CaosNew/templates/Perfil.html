@@ -7,6 +7,8 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'css/Perfil.css' %}">
+<script src="{% static 'js/sweetalert2.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/sweetalert2.min.css' %}" id="theme-styles">
 {% endblock css%}
 
 {% block contenido%}
@@ -17,7 +19,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="profile-img">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                        <img src="{% static 'img/JorgeTapia.jpg' %}" alt="" />
                         <div class="file btn btn-lg btn-primary">Cambiar Foto<input type="file" name="file" /></div>
                     </div>
                 </div>
@@ -86,7 +88,7 @@
 <script>
     function eliminar(titulo) {
         Swal.fire({
-            title: '¿Desea eliminar la mascota ' + titulo + '?',
+            title: '¿Desea eliminar la noticia ' + titulo + '?',
             showCancelButton: true,
             confirmButtonText: 'OK',
             denyButtonText: 'Cancelar',
@@ -122,7 +124,7 @@
                     <input type="file" name="txtImagen" id="txtImagen" style="margin-top: 1em;">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary">Grabar</button>
                 </div>
             </form>
